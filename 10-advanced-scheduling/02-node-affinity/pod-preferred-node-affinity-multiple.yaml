@@ -1,0 +1,29 @@
+# pod-with-preferred-node-affinity-multiple.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: utrains4
+  labels:
+   app: utrains4
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 10
+        preference:
+          matchExpressions:
+          - key: sku
+            operator: In
+            values:
+            - medium
+      - weight: 30
+        preference:
+          matchExpressions:
+          - key: memory
+            operator: In
+            values:
+            - ssd       
+  containers:
+    - name: utrains-app
+      image: httpd

@@ -1,0 +1,23 @@
+# pod-with-required-node-affinity-multiple.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: utrains2
+  labels:
+   app: utrains2
+spec:
+  containers:
+    - name: utrains-app
+      image: httpd
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: disktype
+            operator: In
+            values:
+            - ssd
+            - hdd
+

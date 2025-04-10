@@ -1,0 +1,19 @@
+# sample-pod-for-pod-affinity
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-a
+  labels:
+   app: web
+spec:
+  containers:
+    - name: httpd
+      image: httpd
+#
+# Creating a simple pod. Which has apache configured inside it.  
+#
+# run the pod
+# kubectl create -f podA.yaml
+#
+# check the pod to find the node where it is placed
+# kubectl get pods -o wide

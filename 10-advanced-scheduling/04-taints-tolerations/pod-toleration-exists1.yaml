@@ -1,0 +1,44 @@
+# pod-toleration-exists1.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webserver3
+spec:
+  containers:
+    - name: httpd
+      image: httpd
+      ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+  tolerations:
+  - key: "color"
+    operator: "Exists"
+    effect: "NoSchedule"
+#
+# first add a taint to the nodes
+# node 01
+# kubectl taint node <node-name> color=pink:NoSchedule
+# 
+# node02
+# kubectl taint node <node-name> color=yellow:NoSchedule
+#
+# confirm that taint is applied 
+# kubectl describe node node01 | grep Taint
+# kubectl describe node node02 | grep Taint
+#
+# Run the pod
+# kubectl create -f pod-toleration-exists1.yaml
+#
+# Check the pod
+# kubectl get pods 
+# It should running on any of the nodes
+#
+# Delete pod
+# kubectl delete pod/webserver
+#
+# Delete the taints from the nodes:
+# kubectl taint node node01 color:NoSchedule-
+# kubectl taint node node02 color:NoSchedule-
+#

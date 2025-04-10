@@ -1,0 +1,36 @@
+# pod-qos-besteffort.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qos-besteffort
+  namespace: qos-example
+  labels:
+   app: utrains
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+#
+# Creating a simple pod with the nginx image. 
+# There are no cpu or memory limits applied on pod. 
+#
+# QoS = Best Effort 
+#
+# create namespace qos-example
+# kubectl create namespace qos-example
+#
+# run the pod
+# kubectl create -f pod-qos-besteffort.yaml
+#
+# check the pod
+# kubectl get pods -n qos-example
+#
+# get details about pod
+# kubectl describe pod/qos-besteffort -n qos-example
+# 
+# Check the "QoS Class" value. 
+#
+# delete pod
+# kubectl delete pod/qos-besteffort -n qos-example
+#

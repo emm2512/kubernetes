@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-node-name
+spec:
+  nodeName: node01 # schedule pod to specific node
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+#
+#
+# Here we create a pod that should be placed on the node with the name node01 (modify this name accordingly)
+# kubectl get nodes
+#
+# Create the pod
+# kubectl apply -f pod-node-name.yaml
+# kubectl get pods -o wide

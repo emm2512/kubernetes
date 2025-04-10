@@ -1,0 +1,48 @@
+# pod-liveness-probe.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: pod-liveness
+spec:
+  containers:
+  - name: liveness
+    image: registry.k8s.io/busybox:1.27.2
+    args: ["/bin/sh", "-c", "touch /tmp/healthy; sleep 20; rm -f /tmp/healthy; sleep 600"]
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+#
+#
+# liveness probe indicates whether a container is running or not
+# so that the kubelet can restart it if required based on the restart policy
+#
+# the periodSeconds field specifies that the kubelet should perform a liveness probe every 5 seconds
+# The initialDelaySeconds field tells the kubelet that it should wait 5 seconds before performing the first probe 
+#
+# In this pod, the kubelet will run the cat /tmp/healthy command to perform the probe
+# if the command is successfull then the container is alive
+# if it fails, then the container is unhealthy
+#
+# create the pod
+# kubectl create -f pod-liveness-probe.yaml
+#
+# verify
+# kubectl get pods - the pod should be running
+#
+# check the liveness probe - after 20 seconds, the liveness probes should fails
+# then kubelet should restart the container
+#
+# kubectl describe pod pod-liveness
+# 
+# run many times to check that the pod is continuously restarted after some time
+# kubectl get pods
+#
+# delete the pod
+# kubectl delete pod pod-liveness

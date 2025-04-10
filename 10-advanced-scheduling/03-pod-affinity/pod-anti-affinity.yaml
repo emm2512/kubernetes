@@ -1,0 +1,43 @@
+# pod-with-pod-anti-affinity.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-c
+  labels:
+   app: utrains
+spec:
+  containers:
+    - name: httpd
+      image: httpd
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - web
+        topologyKey: "kubernetes.io/hostname"
+
+#
+# First create the podA (web) using
+# kubectl create -f podA.yaml
+#
+# Check the node where its running.
+#
+# Now we want this pod not to be deployed on same node, where podA is running
+#
+# run the pod
+# kubectl create -f pod-anti-affinity.yaml
+#
+# check the pod
+# kubectl get pods -o wide
+#
+# check that the two pods are not running on the same node
+# 
+# delete pod
+# kubectl delete pod podC
+# kubectl delete pod web
+#

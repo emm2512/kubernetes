@@ -1,0 +1,42 @@
+# pod-startup-probe.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: startup
+  name: pod-startup
+spec:
+  containers:
+  - name: startup
+    image: registry.k8s.io/busybox:1.27.2
+    args: ["/bin/sh", "-c", "sleep 20; touch /tmp/started; sleep 600"] # Simulates slow startup  
+    startupProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/started
+      failureThreshold: 10  # Allow up to 10 failed checks
+      periodSeconds: 3      # Check every 3 seconds
+#
+#
+# Startup probe indicates when a container application has started. 
+# This pod simulates a slow startup by taking 20 seconds to create the /tmp/started file.
+# The Startup Probe gives it enough time before the liveness check kicks in.
+#
+# Expected Behavior:
+# The pod gets 20 seconds to fully start before Kubernetes considers it unhealthy.
+# If the pod takes longer than 30 seconds, Kubernetes restarts it.
+#
+# create the pod
+# kubectl create -f pod-startup-probe.yaml
+#
+# verify - the pod should be running but not ready before 20s
+# kubectl get pods 
+#
+# check the startup probe - after 20 seconds, the pod should be ready
+# kubectl describe pod pod-startup
+# run many times to check
+#
+# delete the pod
+# kubectl delete pod pod-startup

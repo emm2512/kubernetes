@@ -1,0 +1,24 @@
+# pod-configmap-arg.yaml
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  default_command: "date"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-config-pod
+spec:
+  containers:
+    - name: app-container
+      image: busybox:latest
+      command: ["/bin/sh", "-c", "$(STARTUP_COMMAND)"]
+      env:
+       - name: STARTUP_COMMAND
+       - valueFrom:
+           configMapKeyRef:
+             name: app-config
+             key: default_command

@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logging-pod
+  namespace: default
+spec:
+  priorityClassName: critical-pods
+  containers:
+    - name: logging-container
+      image: busybox
+      command: ["sh", "-c", "while true; do echo Logging; sleep 10; done"]
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "50Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: batch-pod
+  namespace: default
+spec:
+  priorityClassName: low-priority-pods
+  containers:
+    - name: batch-container
+      image: busybox
+      command: ["sh", "-c", "while true; do echo Processing; sleep 10; done"]
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "100Mi"
+#
+#
+#Imagine you have a Kubernetes cluster running multiple applications, 
+# including a critical logging service and a less important batch processing job.
+#
+# The logging service should always run, even if the cluster runs out of resources.
+# The batch processing job can be evicted when resources are scarce.
+#
+# create the pods in the cluster and verify their priority with their priority classes
+# kubectl create -f pod-with-priority.yaml
+# kubectl get pods
+# kubectl describe pod logging-pod
+# kubectl describe pod batch-pod
+#
+# Delete the objects
+# kubectl delete -f pod-with-priority.yaml
+# this will delete the two objects

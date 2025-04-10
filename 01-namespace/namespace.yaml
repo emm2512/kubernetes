@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+#
+# Here we create a simple namespace called dev
+# kubectl create -f namespace.yaml
+# kubectl get namespace
+# kubectl get ns
+# kubectl delete ns dev

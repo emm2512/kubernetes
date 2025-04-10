@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota-test
+  namespace: test
+spec:
+  hard:
+    pods: "1"
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+#
+# Here we define a specific number of pods that can be created in the test namespace
+# we also define cpu and memory requests and limits.

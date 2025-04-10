@@ -1,0 +1,23 @@
+# pod-with-port.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: utrains
+  namespace: dev
+  labels:
+   app: utrains
+spec:
+  containers:
+    - name: utrains-app
+      image: httpd
+      ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+#
+# Here we run a pod in a specific namespace exposing a port (80) using TCP protocol
+# kubectl create -f 02-pod-with-port.yaml
+# kubectl get pods -n dev
+# kubectl describe pod utrains -n dev
+# kubectl delete pod utrains -n dev

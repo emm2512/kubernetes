@@ -1,0 +1,41 @@
+# pod-with-pod-affinity
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-b
+  labels:
+   app: utrains
+spec:
+  containers:
+    - name: httpd
+      image: httpd
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - web
+        topologyKey: "kubernetes.io/hostname"
+#
+# First create the podA (web) using
+# kubectl create -f podA.yaml
+#
+# Check the node where its running.
+#
+# Now we want this pod to be deployed on same node, where podA is running
+#
+# run the pod
+# kubectl create -f pod-affinity.yaml
+#
+# check the pod
+# kubectl get pods -o wide
+#
+# check that the two pods will be running on the same node
+# 
+# delete pod
+# kubectl delete pod podB
+# kubectl delete pod web
+#

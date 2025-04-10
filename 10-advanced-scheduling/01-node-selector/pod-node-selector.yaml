@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-node-selector
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  nodeSelector:
+    disktype: ssd
+#
+# Here we create a pod that should be placed on the node with the label disktype=ssd
+# first make sure the node is labeled
+# kubectl get nodes
+# kubectl label nodes <your-node-name> disktype=ssd
+# kubectl get nodes --show-labels
+#
+# Create the pod
+# kubectl apply -f pod-node-selector.yaml
+# kubectl get pods -o wide

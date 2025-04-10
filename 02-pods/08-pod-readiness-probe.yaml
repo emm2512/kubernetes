@@ -1,0 +1,43 @@
+# pod-readiness-probe.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: readiness
+  name: pod-readiness
+spec:
+  containers:
+  - name: readiness
+    image: registry.k8s.io/busybox:1.27.2
+    args: ["/bin/sh", "-c", "sleep 20; touch /tmp/ready; sleep 600"] # Creates file after 10s, simulating readiness delay
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/ready
+      initialDelaySeconds: 5  # Wait 5s before first check
+      periodSeconds: 5        # Check every 5s
+#
+#
+# readiness probe indicates whether a container is ready to respond to requests or not
+#
+# the periodSeconds field specifies that the kubelet should perform a readiness probe every 5 seconds
+# The initialDelaySeconds field tells the kubelet that it should wait 5 seconds before performing the first probe 
+#
+# In this pod, the kubelet will run the cat /tmp/ready command to perform the probe
+# if the command is successfull then the container is ready
+# if it fails, then the container is not ready
+#
+# create the pod
+# kubectl create -f pod-readiness-probe.yaml
+#
+# verify - the pod should be running but not ready before 20s
+# kubectl get pods 
+#
+# check the readiness probe - after 20 seconds, the pod should be ready
+# kubectl describe pod pod-readiness
+# run many times to check
+#
+# delete the pod
+# kubectl delete pod pod-readiness

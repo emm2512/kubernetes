@@ -1,0 +1,28 @@
+# pod-priority-class.yaml
+#
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: critical-pods
+value: 1000  # Higher priority
+preemptionPolicy: PreemptLowerPriority
+globalDefault: false
+description: "Priority for critical logging services"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low-priority-pods
+value: 100  # Lower priority
+preemptionPolicy: Never
+globalDefault: false
+description: "Priority for less important batch jobs"
+#
+#
+# Here we define two priority classes objects for critical pods and for low priority pods
+# 
+# Create the priority classes
+# kubectl create -f pod-priority-class.yaml
+#
+# verify
+# kubectl get priorityclass

@@ -1,0 +1,53 @@
+# pod 1 in dev namespace
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod1-dev
+  namespace: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      limits:
+        memory: "800Mi"
+        cpu: "1000m"
+      requests:
+        memory: "600Mi"
+        cpu: "350m"
+---
+# pod 2 in dev namespace
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod2-dev
+  namespace: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      limits:
+        memory: "300Mi"
+        cpu: "500m"
+      requests:
+        memory: "200Mi"
+        cpu: "350m"
+---
+# Pod 3 in the dev namespace. This pod wont be created
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-quota3-dev
+  namespace: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      limits:
+        memory: "800Mi"
+        cpu: "1000m"
+      requests:
+        memory: "600Mi"
+        cpu: "350m"

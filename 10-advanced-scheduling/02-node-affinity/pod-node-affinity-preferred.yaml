@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-node-affinity-preferred
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: disktype
+            operator: In
+            values:
+            - ssd          
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+#
+# Here we create a pod that prefers to be placed on the node with the label disktype=ssd
+# first make sure the node is labeled
+# kubectl get nodes
+# kubectl label nodes <your-node-name> disktype=ssd
+# kubectl get nodes --show-labels
+#
+# Create the pod
+# kubectl apply -f pod-node-affinity-preferred.yaml
+# kubectl get pods -o wide
+#
+# Delete the pod, remove the label on the node and create the pod once more to verify
+# kubectl delete pod pod-node-affinity-required 
+# kubectl label nodes <your-node-name> disktype-
+# kubectl get nodes --show-labels
+#
+# kubectl apply -f pod-node-affinity-preferred.yaml
+# kubectl get pods -o wide
+# the pod should be still be running

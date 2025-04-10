@@ -1,0 +1,41 @@
+# pod-qos-burstable.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qos-burstable
+  namespace: qos-example
+  labels:
+   app: utrains
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      resources:
+        limits:
+          memory: "250Mi"
+        requests:
+          memory: "150Mi"
+#
+# Creating a simple pod running nginx 
+# There are memory request and memory limits restrictions. 
+# So pod will initially be given 150Mi of physical memory, but it can burst upto 250Mi if needed
+#
+# QoS = Burstable
+#
+# create namespace qos-example 
+# kubectl create namespace qos-example
+#
+# run the pod
+# kubectl create -f pod-qos-burstable.yaml
+#
+# check the pod
+# kubectl get pods -n qos-example
+#
+# get details about pod
+# kubectl describe pod/qos-burstable -n qos-example
+# 
+# Check the "QoS Class" value. 
+#
+# delete pod
+# kubectl delete pod/qos-burstable -n qos-example
